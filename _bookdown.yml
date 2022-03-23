@@ -1,8 +1,9 @@
 book_filename: "bookdownproj"
-output_dir: docs
 delete_merged_file: true
+output_dir: "docs"
 edit: https://github.com/jsitters/essbookdown/edit/master/%s
 view: https://github.com/jsitters/essbookdown/blob/master/%s
 language:
   ui:
     chapter_name: "Chapter "
+
