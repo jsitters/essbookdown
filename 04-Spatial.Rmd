@@ -1,0 +1,37 @@
+--- 
+title: "ESS Final Project"
+author: "Jan Sitterson"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+# Spatial Data in R
+```{r setup4, include=FALSE}
+library(tidyverse) # Tidy packages
+library(sf) #Spatial package that can read and create shapefiles 
+library(mapview) #Interactive maps
+library(LAGOSNE) #Lots and lots of clean lake data
+library(USAboundaries) #USA states and counties
+mapviewOptions(fgb=FALSE)
+
+lagos <- lagosne_load()
+
+#Grab the lake centroid info
+lake_centers <- lagos$locus
+
+spatial_lakes <- st_as_sf(lake_centers,coords=c('nhd_long','nhd_lat'),
+                          crs=4326) %>%
+  st_transform(2163)
+
+#Subset for plotting
+subset_spatial <- spatial_lakes %>%
+  slice(1:100) 
+
+subset_baser <- spatial_lakes[1:100,]
+I_state <- states %>%
+  filter(name == 'Illinois'| name=='Iowa' ) %>%
+  #filter(name == 'Iowa')
+  st_transform(2163)
+
+mapview(I_state)
+
+```

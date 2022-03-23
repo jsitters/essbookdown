@@ -1,0 +1,136 @@
+# Functions and Iterations
+```{r setup3, include=FALSE}
+library(rvest)
+library(tidyverse)
+library(lubridate)
+library(readxl)
+
+```
+
+```{r}
+library(rvest)
+site_url <- 'https://snowstudies.org/archived-data/'
+#Read the web url
+webpage <- read_html(site_url)
+
+#Extract only weblinks and then the URLs!
+links <- webpage %>%
+  html_nodes('a') %>%
+  .[grepl('forcing',.)] %>%
+  html_attr('href')
+message(links)
+```
+2. Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
+```{r}
+splits <- str_split_fixed(links,'/',8)
+#Keep only the 8th column
+dataset <- splits[,8] 
+#generate a file list for where the data goes
+file_names <- paste0('data/',dataset)
+for(i in 1:3){
+  download.file(links[i],destfile=file_names[i])
+}
+downloaded <- file.exists(file_names)
+list.dirs(path='3_snow_functions_iteration/data')
+
+
+```
+3. Write a custom function to read in the data and append a site column to the data. 
+
+```{r}
+
+# this code grabs the variable names from the metadata pdf file
+library(pdftools)
+headers <- pdf_text('https://snowstudies.org/wp-content/uploads/2022/02/Serially-Complete-Metadata-text08.pdf') %>%
+  readr::read_lines(.) %>%
+  trimws(.) %>%
+  str_split_fixed(.,'\\.',2) %>%
+  .[,2] %>%
+  .[1:26] %>%
+  str_trim(side = "left")
+headers
+#function to read in 1 data file
+# 
+#file=file_names[1]
+reader<- function(file){
+  name = str_split_fixed(file,'/',2)[,2]%>%
+  gsub('_Forcing_Data.txt','',.)
+  df<-read_fwf(file)%>%
+    select(c(1:11))
+    names(df)<-headers[1:11]
+    df<-df%>%
+      mutate(site=name)
+}
+view(reader(file_names[1]))
+
+
+```
+
+4. Use the `map` function to read in both meteorological files. Display a summary of your tibble.
+```{r}
+
+met_files<- map_dfr(file_names, reader)
+summary(met_files)
+
+```
+5. Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
+```{r}
+temperature<-met_files%>%
+  group_by(year, site)%>%
+  summarize(meanT = mean(`air temp [K]`))
+
+ggplot(temperature, aes(x=year, y=meanT, color=site))+
+  geom_line()+
+  ggthemes::theme_few()
+message("Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.")
+
+```
+6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
+Hint: https://ggplot2.tidyverse.org/reference/print.ggplot.html
+```{r}
+
+loopy<-function(data, xyear){
+  #y<-as.vector(unique(data[c("year")]))
+  met<-data%>%group_by(year, month , site)%>%
+  summarize(meanT=mean(`air temp [K]`))%>%
+    dplyr::filter(year==xyear)
+  print(ggplot(met,aes(x=month, y=meanT, color=site))+
+            geom_line()+ facet_wrap(xyear))}
+  
+for (i in 2005:2010){
+  loopy(met_files, i)
+}
+message("From 2005 to 2010 the monthly average temperatures at the Senator Beck Study Plot are never warmer than the Snow Angel Study Plot")
+
+```
+Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years). Color each site. 
+```{r}
+#coloring each site will not work with duplicate site data
+met_files$second<-as.Date(with(met_files,paste(month,day,sep="-")),"%m-%d")%>%
+format(., "%j")
+  pre<-group_by(met_files,second)%>%
+  summarize(meanPre = mean(`precip [kg m-2 s-1]`))
+    names(pre)=c('Julian_Day', 'Mean_Precip')
+ggplot(pre, aes(x=Julian_Day,y=Mean_Precip))+
+  geom_point()+
+  ggthemes::theme_few()
+
+
+```
+Bonus #2: Use a function and for loop to create yearly plots of precipitation by day of year. Color each site. 
+```{r}
+
+Ploopy<-function(data, xyear){
+  #y<-as.vector(unique(data[c("year")]))
+  met<-data%>%group_by(year, second , site)%>%
+  summarize(meanP=mean(`precip [kg m-2 s-1]`))%>%
+    dplyr::filter(year==xyear)
+    colnames(met)[2]='Julian_Day'
+  print(ggplot(met,aes(x=Julian_Day, y=meanP, color=site))+
+            geom_point()+ facet_wrap(xyear))}
+  
+for (i in 2003:2010){
+  Ploopy(met_files, i)
+}
+
+```

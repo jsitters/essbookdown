@@ -1,0 +1,107 @@
+--- 
+title: "ESS Final Project"
+author: "Jan Sitterson"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+## TSS Model
+
+```{r}
+tss_boost <- booster(pred = 'TSS',df = wq_sr)
+
+```
+
+
+
+### TSS plot
+
+
+```{r}
+
+boosted <- function(df = wq_sr,pred='TSS',title='Total Suspended Solids',
+                    features = predictors){
+  
+  non_nas <- (!is.na(df[,pred]))
+  
+  #remove nas
+  df = df[non_nas,]
+  
+  
+  #Sample 60% of the data. 
+  train <- df %>%
+    sample_frac(0.6) 
+  
+  #Keep only data that is not in train
+  #How could we make this safer (spatiotemporal robustness)
+  test <- df %>%
+    anti_join(.,train,by='index')
+  
+  
+  # Actual boosting model
+  ag_mod <- xgboost(data=train %>%
+                    dplyr::select(features) %>% 
+                      as.matrix(.),
+                  label = train %>% pull(pred) %>% log10(.),
+                  nthread=4,
+                  max_depth=4,
+                  eta=0.1,
+                  gamma = 0.1,
+                  nrounds=300,
+                  subsample = 0.5, #best_par['subsample'], # 0.5,
+                  colsample_bytree = 0.5,  #0.5,
+                  min_child_weight = 1, 
+                  lambda = 3, #3
+                  print_every_n = 100)
+  
+  #Tune ntree, k, numcut, bands that you use, etc...
+  
+  
+  #apply predictions. 
+  test <- test %>% 
+    mutate(bpred= 10^predict(ag_mod,test %>%
+                               dplyr::select(features) %>% 
+                      as.matrix(.)))
+  #Optional for log
+  #test[,pred] = 10^test[,pred]
+  
+  #Remove NAs
+  test <- test %>%
+    filter(!is.na(pred)) %>%
+    as.data.frame()
+  
+  error <- 
+    tibble(rmse=Metrics::rmse(test$bpred,test[,pred]),
+                       mdae=Metrics::mdae(test$bpred,test[,pred]),
+                       mape=Metrics::mape(test$bpred,test[,pred]),
+                       bias=Metrics::bias(test$bpred,test[,pred]))
+
+
+g2 <- ggplot(test,
+         aes_string(x=pred,y='bpred',color='year'))  +
+    geom_point() + 
+    geom_abline(intercept=0,slope=1,color='red') +
+    labs(x='Measured',y='Predicted') + 
+    theme_few() +
+  scale_color_viridis_c() + 
+     scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x)))  +
+       scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) + 
+  ggtitle(title)
+
+
+return(list(g2,error,ag_mod))
+}
+```
+
+
+### TSS Evaluation
+
+```{r}
+set.seed(2020526) ## Makes the work reproducible, but you can hack this!
+tss_boost <- boosted(df = wq_sr)
+
+tss_boost[[1]]
+tss_boost[[2]]
+
+```
