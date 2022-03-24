@@ -1,4 +1,4 @@
-#Machine Learning
+# Machine Learning
 Using machine learning to fine tune a model to get the lowest error. 
 
 
@@ -27,7 +27,7 @@ the late 70s. For this analysis we are only using Landsat 5,7, and 8, so the
 data goes back to 1984. 
 
 
-## Read in Data
+## Model development
 
 
 ```r
@@ -50,7 +50,7 @@ wq_sr <- read_csv('data/wq_sr.csv') %>%
 ```
 
 
-## Model development
+
 
 
 This is the fiddly bit. The goal? Tune hyperparameters to get the lowest

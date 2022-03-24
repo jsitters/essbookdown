@@ -2,6 +2,7 @@
 # Spatial Data in R
 Using LAGOSNE lake data and Mapview to look at spatial data in R. 
 ```{r setup4, include=FALSE}
+library(lubridate)
 library(tidyverse) # Tidy packages
 library(sf) #Spatial package that can read and create shapefiles 
 library(mapview) #Interactive maps
@@ -39,6 +40,26 @@ What is the correlation between Secchi Disk Depth and Chlorophyll a for sites wi
 
 ```{r}
 ### Take the mean chl_a and secchi by lake
+lake_centers <- lagos$locus
+# Make an sf object 
+spatial_lakes <- st_as_sf(lake_centers,coords=c('nhd_long','nhd_lat'),
+                          crs=4326)
+#Grab the water quality data
+nutr <- lagos$epi_nutr
+
+clarity_only <- nutr %>%
+  select(lagoslakeid,sampledate,chla,doc,secchi) %>%
+  mutate(sampledate = as.character(sampledate) %>% ymd(.))
+
+chla_secchi <- clarity_only %>%
+  filter(!is.na(chla),
+         !is.na(secchi))
+
+chla_secchi_200 <- chla_secchi %>%
+  group_by(lagoslakeid) %>%
+  mutate(count = n()) %>%
+  filter(count > 200)
+
 mean_values_200 <- chla_secchi_200 %>%
   # Take summary by lake id
   group_by(lagoslakeid) %>%

@@ -156,7 +156,7 @@ cornyields <- select(cornyieldsall, county_ansi, county_name,county_code, yield,
 cornyields <- tibble(cornyields)
 ```
 
-##Question 1a:
+## Question 1a:
 Extract Winneshiek County corn yields, fit a linear time trend, make a plot. Is there a significant time trend?
 
 ```r

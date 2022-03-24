@@ -20,7 +20,7 @@ message(links)
 ```
 ## https://snowstudies.org/wp-content/uploads/2022/02/SBB_SASP_Forcing_Data.txthttps://snowstudies.org/wp-content/uploads/2022/02/SBB_SBSP_Forcing_Data.txt
 ```
-##2. 
+## Loop to read in data 
 Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
 
 ```r
@@ -39,7 +39,7 @@ list.dirs(path='3_snow_functions_iteration/data')
 ```
 ## character(0)
 ```
-##3.
+## Read in Function
 Write a custom function to read in the data and append a site column to the data. 
 
 
@@ -122,7 +122,7 @@ view(reader(file_names[1]))
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
-##4.
+## Map Function
 Use the `map` function to read in both meteorological files. Display a summary of your tibble.
 
 ```r
@@ -175,7 +175,7 @@ summary(met_files)
 ##  3rd Qu.:279.7   3rd Qu.:    3.087                     
 ##  Max.   :295.8   Max.   :  317.300
 ```
-##5.
+## Plotting data
 Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
 
 ```r
@@ -204,7 +204,7 @@ message("Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP f
 ```
 ## Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.
 ```
-##6.
+## Function to create multiple plots
 Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
 Hint: https://ggplot2.tidyverse.org/reference/print.ggplot.html
 
@@ -266,7 +266,7 @@ message("From 2005 to 2010 the monthly average temperatures at the Senator Beck 
 ```
 ## From 2005 to 2010 the monthly average temperatures at the Senator Beck Study Plot are never warmer than the Snow Angel Study Plot
 ```
-##Bonus
+## Bonus
 Make a plot of average daily precipitation by day of year (averaged across all available years). Color each site. 
 
 ```r
