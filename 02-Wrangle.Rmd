@@ -1,5 +1,5 @@
 # Data Wrangle
-
+Pulling data from files and reading them into R for analysis. 
 ```{r setup2, warning=F,message=F}
 library(tidyverse)
 library(tidyr)
@@ -9,7 +9,7 @@ library(lubridate)
 # Now that we have learned how to munge (manipulate) data
 # and plot it, we will work on using these skills in new ways
 
-knitr::opts_knit$set(root.dir='..')
+#knitr::opts_knit$set(root.dir='..')
 ```
 
 
@@ -45,7 +45,7 @@ full_long <- rbind(ndvi,ndmi,ndsi) %>%
 
 
 
-## Question 1) 
+## Question (1) 
 
 What is the correlation between NDVI and NDMI? - here I want you to
 convert the full_long dataset in to a wide dataset using the 
@@ -66,7 +66,7 @@ ggplot(full_wide, aes(x=ndmi, y=ndvi,color=site ))+
 print("There is a positive correlation between NDMI and NDVI for the summer months. This indicates that seasonal moisture impacts vegetation growth. ")
 
 ```
-## Question 2 
+## Question (2) 
 
 2) What is the correlation between average NDSI (normalized
  snow index) for January - April and average NDVI for June-August?
@@ -96,7 +96,7 @@ ggplot(all_year, aes(x=mean_ndsi, y=mean_ndvi))+
 print("There is a weak positive correlation between NSDI and NDVI. This indicates that the previous years' snow cover influences the vegetation growth.")
 
 ```
-## Q3
+## Question (3)
 
 How is the snow effect from question 2 different between pre- and post-burn
 and burned and unburned? 
@@ -122,7 +122,7 @@ ggplot(all_year3, aes(x=mean_ndsi, y=mean_ndvi, color=site))+
   scale_color_few()
 message("The burned sites (blue) are more impacted by the previous years snow than the unburned (orange) sites")
 ```
-## Question 4
+## Question (4)
 
 What month is the greenest month on average? 
 
@@ -145,7 +145,7 @@ message("On average the greenest month is the ", Q4, "th month.")
 ```
 
 
-## Question 5) 
+## Question (5) 
 
 What month is the snowiest on average?
 ```{r}

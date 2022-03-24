@@ -1,13 +1,5 @@
---- 
-title: "ESS Final Project"
-author: "Jan Sitterson"
-date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
----
 # Regressions
----
-
-
+Using regressions to make assumptions about data trends
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
@@ -16,8 +8,7 @@ library(rnassqs)
 ```
 
 ## Weather Data Analysis
-
-### Load the PRISM daily maximum temperatures
+Load the PRISM daily maximum temperatures
 
 ```{r tmax data}
 
@@ -28,16 +19,6 @@ prism <- readMat("data/prismiowa.mat")
 # look at county #1
 t_1981_c1 <- prism$tmaxdaily.iowa[1,,1]
 t_1981_c1[366]
-# plot(1:366, t_1981_c1, type = "l")
-# 
-# ggplot() +
-#   geom_line(mapping = aes(x=1:366, y = t_1981_c1)) +
-#   theme_bw() +
-#   xlab("day of year") +
-#   ylab("daily maximum temperature (°C)") +
-#   ggtitle("Daily Maximum Temperature, Iowa County #1")
-
-
 ```
 ```{r tidying up}
 
@@ -55,7 +36,7 @@ tmaxdf <- tibble(tmaxdf)
 
 ## Temperature trends
 
-### Summer temperature trends: Winneshiek County
+Summer temperature trends: Winneshiek County
 
 ```{r temp trends}
 
@@ -78,7 +59,7 @@ lm_summertmax <- lm(meantmax ~ year, winnesummer)
 
 ```
 
-### Winter Temperatures - Winneshiek County
+Winter Temperatures - Winneshiek County
 
 ```{r winter temps}
 
@@ -98,7 +79,8 @@ lm_wintertmax <- lm(meantmax ~ year, winnewinter)
 
 ```
 
-### Multiple regression -- Quadratic time trend
+## Multiple regression -- 
+Quadratic time trend
 
 ```{r quadratic temp trend}
 
@@ -116,8 +98,8 @@ ggplot(winnewinter) +
 
 ```
 
-### Download NASS corn yield data
-
+## Download NASS corn yield data
+USDA NASS data download
 ```{r , results='hide'}
 
 # set our API key with NASS
@@ -139,9 +121,8 @@ cornyields <- tibble(cornyields)
 
 ```
 
-## Assignment
-
-### Question 1a: Extract Winneshiek County corn yields, fit a linear time trend, make a plot. Is there a significant time trend?
+## Question 1a:
+Extract Winneshiek County corn yields, fit a linear time trend, make a plot. Is there a significant time trend?
 ```{r}
 winne<- cornyieldsall%>%
   filter(county_name=='WINNESHIEK')
@@ -162,7 +143,7 @@ message("There is an increasing linear trend between year and yield.")
 ```
 ### Question 1b: Fit a quadratic time trend (i.e., year + year^2) and make a plot. Is there evidence for slowing yield growth? 
 ```{r}
-
+Winne_CY$year <- as.numeric(Winne_CY$year)
 Winne_CY$yearsq <- Winne_CY$year^2
 
 lm_winnequad <- lm(yield ~ year + yearsq, Winne_CY)
@@ -180,7 +161,8 @@ ggplot(Winne_CY) +
 message("There does not seem to be evidence of slowing yield in Winneshiek County because there is a positive quadratic relationship. ")
 
 ```
-### Question 2 -- Time Series: Let's analyze the relationship between temperature and yields for the Winneshiek County time series. Use data on yield and summer avg Tmax. Is adding year or Tmax^2 to your model helpful? Make a plot and interpret the results.
+## Question 2 
+Time Series: Let's analyze the relationship between temperature and yields for the Winneshiek County time series. Use data on yield and summer avg Tmax. Is adding year or Tmax^2 to your model helpful? Make a plot and interpret the results.
 ```{r}
 q2<-inner_join(winnesummer, Winne_CY)
 ggplot(q2,aes(x=meantmax, y=yield))+
@@ -207,7 +189,8 @@ message('Adding a model of Tmax^2 is helpful to interperte the trends of tempera
 
 
 ```
-### Question 3 -- Cross-Section: Analyze the relationship between temperature and yield across all counties in 2018. Is there a relationship? Interpret the results.
+## Question 3 
+Cross-Section: Analyze the relationship between temperature and yield across all counties in 2018. Is there a relationship? Interpret the results.
 ```{r}
 
 colnames(cornyields)[1]="countyfp"
@@ -236,13 +219,16 @@ message('There does not seem to be much of a trend between temperature and corn 
 
 
 ```
-### Question 4 -- Panel: One way to leverage multiple time series is to group all data into what is called a "panel" regression. Convert the county ID code ("countyfp" or "county_ansi") into factor using as.factor, then include this variable in a regression using all counties' yield and summer temperature data. How does the significance of your temperature coefficients (Tmax, Tmax^2) change? Make a plot comparing actual and fitted yields and interpret the results of your model.
+## Question 4 
+Panel: One way to leverage multiple time series is to group all data into what is called a "panel" regression. Convert the county ID code ("countyfp" or "county_ansi") into factor using as.factor, then include this variable in a regression using all counties' yield and summer temperature data. How does the significance of your temperature coefficients (Tmax, Tmax^2) change? Make a plot comparing actual and fitted yields and interpret the results of your model.
 ```{r}
 
 summer <- tmaxdf %>%
   filter(doy >= 152 & doy <= 243) %>%
   group_by(year) %>%
   summarize(meantmax = mean(tmax))
+
+cornyields$year <- as.numeric(cornyields$year)
 
 combo<- inner_join(cornyields, summer, by='year')
 combo$fac<- as.factor(combo$countyfp)
@@ -261,7 +247,8 @@ ggplot()+
 message('The model fits yield based on multiple variables including mean max temp, temperature squared, each county, and each year. The coefficients for temperature is positive but the coefficient for temp^2 is negative. The graph shows how well the modeled predicts values for yield, it is not quite a one to one relationship but there is a linear trend.')
 
 ```
-### Question 5 -- Soybeans: Download NASS data on soybean yields and explore either a time series relationship for a given county, the cross-sectional relationship for a given year, or a panel across all counties and years.
+## Question 5
+Soybeans: Download NASS data on soybean yields and explore either a time series relationship for a given county, the cross-sectional relationship for a given year, or a panel across all counties and years.
 ```{r, include=FALSE, echo=TRUE, results='hide'}
 #how to hide download from knit? 
 nassqs_auth(key = "2FCF525A-8D93-3647-9216-07E60D61705D")
@@ -290,22 +277,4 @@ ggplot(soy%>%
 message('There is a steady increase in soybean yield over time in the Buena Vista county.')
 
 ```
-### Bonus: Find a package to make a county map of Iowa displaying some sort of information about yields or weather. Interpret your map.
-```{r}
-# library(USAboundaries)
-# states <- us_states()
-# Iowa<- states%>%
-#   filter(name=="Iowa")
-# 
-# ggplot(data = d[year == 2016 & state == 'Iowa'],
-#     mapping = aes(x = long, y = lat, group = group)) +
-#     geom_polygon(aes(fill = value), color = "black", size = 0.1) +
-#     geom_polygon(data = polygon_state[state == 'missouri'], col = 'black', fill = NA) +
-#     scale_fill_gradientn(name = 'Yield bu/ac',
-#         colors = brewer.pal(n = 11, name = 'RdYlGn')) +
-#     coord_map('mercator') +
-#     theme_bw()
-```
-### Bonus #2: Challenge question - map trends in corn yields by county across Iowa. Interpret your map.
-```{r}
-```
+

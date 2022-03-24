@@ -1,4 +1,5 @@
 # Functions and Iterations
+Learning to quickly go through and pull data out of a dataset using functions and iterations to avoid repeatitive code. 
 ```{r setup3, include=FALSE}
 library(rvest)
 library(tidyverse)
@@ -20,14 +21,15 @@ links <- webpage %>%
   html_attr('href')
 message(links)
 ```
-2. Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
+## Loop to read in data 
+Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
 ```{r}
 splits <- str_split_fixed(links,'/',8)
 #Keep only the 8th column
 dataset <- splits[,8] 
 #generate a file list for where the data goes
 file_names <- paste0('data/',dataset)
-for(i in 1:3){
+for(i in 1:2){
   download.file(links[i],destfile=file_names[i])
 }
 downloaded <- file.exists(file_names)
@@ -35,7 +37,8 @@ list.dirs(path='3_snow_functions_iteration/data')
 
 
 ```
-3. Write a custom function to read in the data and append a site column to the data. 
+## Read in Function
+Write a custom function to read in the data and append a site column to the data. 
 
 ```{r}
 
@@ -66,14 +69,16 @@ view(reader(file_names[1]))
 
 ```
 
-4. Use the `map` function to read in both meteorological files. Display a summary of your tibble.
+## Map Function
+Use the `map` function to read in both meteorological files. Display a summary of your tibble.
 ```{r}
 
 met_files<- map_dfr(file_names, reader)
 summary(met_files)
 
 ```
-5. Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
+## Plotting data
+Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
 ```{r}
 temperature<-met_files%>%
   group_by(year, site)%>%
@@ -85,7 +90,8 @@ ggplot(temperature, aes(x=year, y=meanT, color=site))+
 message("Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.")
 
 ```
-6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
+## Function to create multiple plots
+Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
 Hint: https://ggplot2.tidyverse.org/reference/print.ggplot.html
 ```{r}
 
@@ -103,7 +109,8 @@ for (i in 2005:2010){
 message("From 2005 to 2010 the monthly average temperatures at the Senator Beck Study Plot are never warmer than the Snow Angel Study Plot")
 
 ```
-Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years). Color each site. 
+## Bonus
+Make a plot of average daily precipitation by day of year (averaged across all available years). Color each site. 
 ```{r}
 #coloring each site will not work with duplicate site data
 met_files$second<-as.Date(with(met_files,paste(month,day,sep="-")),"%m-%d")%>%

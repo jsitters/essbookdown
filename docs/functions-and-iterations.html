@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Functions and Iterations | ESS Final Project</title>
+  <meta name="description" content="Chapter 3 Functions and Iterations | ESS Final Project" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Functions and Iterations | ESS Final Project" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Functions and Iterations | ESS Final Project" />
+  
+  
+  
+
+<meta name="author" content="Jan Sitterson" />
+
+
+<meta name="date" content="2022-03-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-wrangle.html"/>
+<link rel="next" href="regressions.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">essbookdown</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> R Markdown<span></span></a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#sitedescription"><i class="fa fa-check"></i><b>1.1</b> SiteDescription<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-acquisition-and-plotting-tests"><i class="fa fa-check"></i><b>1.2</b> Data Acquisition and Plotting tests<span></span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#static-data-plotter"><i class="fa fa-check"></i><b>1.3</b> Static Data Plotter<span></span></a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#interactive-data-plotter"><i class="fa fa-check"></i><b>1.4</b> Interactive Data Plotter<span></span></a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#assignment-prompt"><i class="fa fa-check"></i><b>1.5</b> Assignment Prompt<span></span></a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#dygraph-example"><i class="fa fa-check"></i><b>1.6</b> DyGraph example<span></span></a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#poudre-paragraph"><i class="fa fa-check"></i><b>1.7</b> Poudre Paragraph<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-wrangle.html"><a href="data-wrangle.html"><i class="fa fa-check"></i><b>2</b> Data Wrangle<span></span></a><ul>
+<li class="chapter" data-level="2.1" data-path="data-wrangle.html"><a href="data-wrangle.html#question-1"><i class="fa fa-check"></i><b>2.1</b> Question (1)<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="data-wrangle.html"><a href="data-wrangle.html#question-2"><i class="fa fa-check"></i><b>2.2</b> Question (2)<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="data-wrangle.html"><a href="data-wrangle.html#question-3"><i class="fa fa-check"></i><b>2.3</b> Question (3)<span></span></a></li>
+<li class="chapter" data-level="2.4" data-path="data-wrangle.html"><a href="data-wrangle.html#question-4"><i class="fa fa-check"></i><b>2.4</b> Question (4)<span></span></a></li>
+<li class="chapter" data-level="2.5" data-path="data-wrangle.html"><a href="data-wrangle.html#question-5"><i class="fa fa-check"></i><b>2.5</b> Question (5)<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="functions-and-iterations.html"><a href="functions-and-iterations.html"><i class="fa fa-check"></i><b>3</b> Functions and Iterations<span></span></a></li>
+<li class="chapter" data-level="4" data-path="regressions.html"><a href="regressions.html"><i class="fa fa-check"></i><b>4</b> Regressions<span></span></a><ul>
+<li class="chapter" data-level="4.1" data-path="regressions.html"><a href="regressions.html#weather-data-analysis"><i class="fa fa-check"></i><b>4.1</b> Weather Data Analysis<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="regressions.html"><a href="regressions.html#temperature-trends"><i class="fa fa-check"></i><b>4.2</b> Temperature trends<span></span></a></li>
+<li class="chapter" data-level="4.3" data-path="regressions.html"><a href="regressions.html#multiple-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple regression –<span></span></a></li>
+<li class="chapter" data-level="4.4" data-path="regressions.html"><a href="regressions.html#download-nass-corn-yield-data"><i class="fa fa-check"></i><b>4.4</b> Download NASS corn yield data<span></span></a><ul>
+<li class="chapter" data-level="4.4.1" data-path="regressions.html"><a href="regressions.html#question-1b-fit-a-quadratic-time-trend-i.e.-year-year2-and-make-a-plot.-is-there-evidence-for-slowing-yield-growth"><i class="fa fa-check"></i><b>4.4.1</b> Question 1b: Fit a quadratic time trend (i.e., year + year^2) and make a plot. Is there evidence for slowing yield growth?<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="regressions.html"><a href="regressions.html#question-2-1"><i class="fa fa-check"></i><b>4.5</b> Question 2<span></span></a></li>
+<li class="chapter" data-level="4.6" data-path="regressions.html"><a href="regressions.html#question-3-1"><i class="fa fa-check"></i><b>4.6</b> Question 3<span></span></a></li>
+<li class="chapter" data-level="4.7" data-path="regressions.html"><a href="regressions.html#question-4-1"><i class="fa fa-check"></i><b>4.7</b> Question 4<span></span></a></li>
+<li class="chapter" data-level="4.8" data-path="regressions.html"><a href="regressions.html#question-5-1"><i class="fa fa-check"></i><b>4.8</b> Question 5<span></span></a></li>
+<li class="chapter" data-level="4.9" data-path="regressions.html"><a href="regressions.html#read-in-data"><i class="fa fa-check"></i><b>4.9</b> Read in Data<span></span></a></li>
+<li class="chapter" data-level="4.10" data-path="regressions.html"><a href="regressions.html#model-development"><i class="fa fa-check"></i><b>4.10</b> Model development<span></span></a></li>
+<li class="chapter" data-level="4.11" data-path="regressions.html"><a href="regressions.html#chl-a-model"><i class="fa fa-check"></i><b>4.11</b> Chl-a model<span></span></a><ul>
+<li class="chapter" data-level="4.11.1" data-path="regressions.html"><a href="regressions.html#chl-a-model-measuredpredicted-plot"><i class="fa fa-check"></i><b>4.11.1</b> Chl-a Model Measured/Predicted Plot<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.12" data-path="regressions.html"><a href="regressions.html#tss-model"><i class="fa fa-check"></i><b>4.12</b> TSS Model<span></span></a><ul>
+<li class="chapter" data-level="4.12.1" data-path="regressions.html"><a href="regressions.html#tss-evaluation"><i class="fa fa-check"></i><b>4.12.1</b> TSS Evaluation<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">ESS Final Project</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="functions-and-iterations" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Chapter 3</span> Functions and Iterations<a href="functions-and-iterations.html#functions-and-iterations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Learning to quickly go through and pull data out of a dataset using functions and iterations to avoid repeatitive code.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="functions-and-iterations.html#cb34-1"></a><span class="kw">library</span>(rvest)</span>
+<span id="cb34-2"><a href="functions-and-iterations.html#cb34-2"></a>site_url &lt;-<span class="st"> &#39;https://snowstudies.org/archived-data/&#39;</span></span>
+<span id="cb34-3"><a href="functions-and-iterations.html#cb34-3"></a><span class="co">#Read the web url</span></span>
+<span id="cb34-4"><a href="functions-and-iterations.html#cb34-4"></a>webpage &lt;-<span class="st"> </span><span class="kw">read_html</span>(site_url)</span>
+<span id="cb34-5"><a href="functions-and-iterations.html#cb34-5"></a></span>
+<span id="cb34-6"><a href="functions-and-iterations.html#cb34-6"></a><span class="co">#Extract only weblinks and then the URLs!</span></span>
+<span id="cb34-7"><a href="functions-and-iterations.html#cb34-7"></a>links &lt;-<span class="st"> </span>webpage <span class="op">%&gt;%</span></span>
+<span id="cb34-8"><a href="functions-and-iterations.html#cb34-8"></a><span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&#39;a&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb34-9"><a href="functions-and-iterations.html#cb34-9"></a><span class="st">  </span>.[<span class="kw">grepl</span>(<span class="st">&#39;forcing&#39;</span>,.)] <span class="op">%&gt;%</span></span>
+<span id="cb34-10"><a href="functions-and-iterations.html#cb34-10"></a><span class="st">  </span><span class="kw">html_attr</span>(<span class="st">&#39;href&#39;</span>)</span>
+<span id="cb34-11"><a href="functions-and-iterations.html#cb34-11"></a><span class="kw">message</span>(links)</span></code></pre></div>
+<pre><code>## https://snowstudies.org/wp-content/uploads/2022/02/SBB_SASP_Forcing_Data.txthttps://snowstudies.org/wp-content/uploads/2022/02/SBB_SBSP_Forcing_Data.txt</code></pre>
+<p>##2.
+Download the meteorological data. Use the <code>download_file</code> and <code>str_split_fixed</code> commands to download the data and save it in your data folder. You can use a for loop or a map function.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="functions-and-iterations.html#cb36-1"></a>splits &lt;-<span class="st"> </span><span class="kw">str_split_fixed</span>(links,<span class="st">&#39;/&#39;</span>,<span class="dv">8</span>)</span>
+<span id="cb36-2"><a href="functions-and-iterations.html#cb36-2"></a><span class="co">#Keep only the 8th column</span></span>
+<span id="cb36-3"><a href="functions-and-iterations.html#cb36-3"></a>dataset &lt;-<span class="st"> </span>splits[,<span class="dv">8</span>] </span>
+<span id="cb36-4"><a href="functions-and-iterations.html#cb36-4"></a><span class="co">#generate a file list for where the data goes</span></span>
+<span id="cb36-5"><a href="functions-and-iterations.html#cb36-5"></a>file_names &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;data/&#39;</span>,dataset)</span>
+<span id="cb36-6"><a href="functions-and-iterations.html#cb36-6"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>){</span>
+<span id="cb36-7"><a href="functions-and-iterations.html#cb36-7"></a>  <span class="kw">download.file</span>(links[i],<span class="dt">destfile=</span>file_names[i])</span>
+<span id="cb36-8"><a href="functions-and-iterations.html#cb36-8"></a>}</span>
+<span id="cb36-9"><a href="functions-and-iterations.html#cb36-9"></a>downloaded &lt;-<span class="st"> </span><span class="kw">file.exists</span>(file_names)</span>
+<span id="cb36-10"><a href="functions-and-iterations.html#cb36-10"></a><span class="kw">list.dirs</span>(<span class="dt">path=</span><span class="st">&#39;3_snow_functions_iteration/data&#39;</span>)</span></code></pre></div>
+<pre><code>## character(0)</code></pre>
+<p>##3.
+Write a custom function to read in the data and append a site column to the data.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="functions-and-iterations.html#cb38-1"></a><span class="co"># this code grabs the variable names from the metadata pdf file</span></span>
+<span id="cb38-2"><a href="functions-and-iterations.html#cb38-2"></a><span class="kw">library</span>(pdftools)</span></code></pre></div>
+<pre><code>## Using poppler version 22.02.0</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="functions-and-iterations.html#cb40-1"></a>headers &lt;-<span class="st"> </span><span class="kw">pdf_text</span>(<span class="st">&#39;https://snowstudies.org/wp-content/uploads/2022/02/Serially-Complete-Metadata-text08.pdf&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-2"><a href="functions-and-iterations.html#cb40-2"></a><span class="st">  </span>readr<span class="op">::</span><span class="kw">read_lines</span>(.) <span class="op">%&gt;%</span></span>
+<span id="cb40-3"><a href="functions-and-iterations.html#cb40-3"></a><span class="st">  </span><span class="kw">trimws</span>(.) <span class="op">%&gt;%</span></span>
+<span id="cb40-4"><a href="functions-and-iterations.html#cb40-4"></a><span class="st">  </span><span class="kw">str_split_fixed</span>(.,<span class="st">&#39;</span><span class="ch">\\</span><span class="st">.&#39;</span>,<span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb40-5"><a href="functions-and-iterations.html#cb40-5"></a><span class="st">  </span>.[,<span class="dv">2</span>] <span class="op">%&gt;%</span></span>
+<span id="cb40-6"><a href="functions-and-iterations.html#cb40-6"></a><span class="st">  </span>.[<span class="dv">1</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span></span>
+<span id="cb40-7"><a href="functions-and-iterations.html#cb40-7"></a><span class="st">  </span><span class="kw">str_trim</span>(<span class="dt">side =</span> <span class="st">&quot;left&quot;</span>)</span>
+<span id="cb40-8"><a href="functions-and-iterations.html#cb40-8"></a>headers</span></code></pre></div>
+<pre><code>##  [1] &quot;year&quot;                                                       
+##  [2] &quot;month&quot;                                                      
+##  [3] &quot;day&quot;                                                        
+##  [4] &quot;hour&quot;                                                       
+##  [5] &quot;minute&quot;                                                     
+##  [6] &quot;second&quot;                                                     
+##  [7] &quot;precip [kg m-2 s-1]&quot;                                        
+##  [8] &quot;sw down [W m-2]&quot;                                            
+##  [9] &quot;lw down [W m-2]&quot;                                            
+## [10] &quot;air temp [K]&quot;                                               
+## [11] &quot;windspeed [m s-1]&quot;                                          
+## [12] &quot;relative humidity [%]&quot;                                      
+## [13] &quot;pressure [Pa]&quot;                                              
+## [14] &quot;specific humidity [g g-1]&quot;                                  
+## [15] &quot;calculated dewpoint temperature [K]&quot;                        
+## [16] &quot;precip, WMO-corrected [kg m-2 s-1]&quot;                         
+## [17] &quot;air temp, corrected with Kent et al. (1993) [K]&quot;            
+## [18] &quot;air temp, corrected with Anderson and Baumgartner (1998)[K]&quot;
+## [19] &quot;air temp, corrected with Nakamura and Mahrt (2005) [K]&quot;     
+## [20] &quot;air temp, corrected with Huwald et al. (2009) [K]&quot;          
+## [21] &quot;qc code precip&quot;                                             
+## [22] &quot;qc code sw down&quot;                                            
+## [23] &quot;qc code lw down&quot;                                            
+## [24] &quot;qc code air temp&quot;                                           
+## [25] &quot;qc code wind speed&quot;                                         
+## [26] &quot;qc code relhum&quot;</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="functions-and-iterations.html#cb42-1"></a><span class="co">#function to read in 1 data file</span></span>
+<span id="cb42-2"><a href="functions-and-iterations.html#cb42-2"></a><span class="co"># </span></span>
+<span id="cb42-3"><a href="functions-and-iterations.html#cb42-3"></a><span class="co">#file=file_names[1]</span></span>
+<span id="cb42-4"><a href="functions-and-iterations.html#cb42-4"></a>reader&lt;-<span class="st"> </span><span class="cf">function</span>(file){</span>
+<span id="cb42-5"><a href="functions-and-iterations.html#cb42-5"></a>  name =<span class="st"> </span><span class="kw">str_split_fixed</span>(file,<span class="st">&#39;/&#39;</span>,<span class="dv">2</span>)[,<span class="dv">2</span>]<span class="op">%&gt;%</span></span>
+<span id="cb42-6"><a href="functions-and-iterations.html#cb42-6"></a><span class="st">  </span><span class="kw">gsub</span>(<span class="st">&#39;_Forcing_Data.txt&#39;</span>,<span class="st">&#39;&#39;</span>,.)</span>
+<span id="cb42-7"><a href="functions-and-iterations.html#cb42-7"></a>  df&lt;-<span class="kw">read_fwf</span>(file)<span class="op">%&gt;%</span></span>
+<span id="cb42-8"><a href="functions-and-iterations.html#cb42-8"></a><span class="st">    </span><span class="kw">select</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span>))</span>
+<span id="cb42-9"><a href="functions-and-iterations.html#cb42-9"></a>    <span class="kw">names</span>(df)&lt;-headers[<span class="dv">1</span><span class="op">:</span><span class="dv">11</span>]</span>
+<span id="cb42-10"><a href="functions-and-iterations.html#cb42-10"></a>    df&lt;-df<span class="op">%&gt;%</span></span>
+<span id="cb42-11"><a href="functions-and-iterations.html#cb42-11"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">site=</span>name)</span>
+<span id="cb42-12"><a href="functions-and-iterations.html#cb42-12"></a>}</span>
+<span id="cb42-13"><a href="functions-and-iterations.html#cb42-13"></a><span class="kw">view</span>(<span class="kw">reader</span>(file_names[<span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## Rows: 69168 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## 
+## chr  (2): X12, X14
+## dbl (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X13, X15, X16, X17, ...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>##4.
+Use the <code>map</code> function to read in both meteorological files. Display a summary of your tibble.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="functions-and-iterations.html#cb45-1"></a>met_files&lt;-<span class="st"> </span><span class="kw">map_dfr</span>(file_names, reader)</span></code></pre></div>
+<pre><code>## Rows: 69168 Columns: 19
+## -- Column specification --------------------------------------------------------
+## 
+## chr  (2): X12, X14
+## dbl (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X13, X15, X16, X17, ...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 69168 Columns: 19
+## -- Column specification --------------------------------------------------------
+## 
+## chr  (2): X12, X14
+## dbl (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X13, X15, X16, X17, ...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="functions-and-iterations.html#cb47-1"></a><span class="kw">summary</span>(met_files)</span></code></pre></div>
+<pre><code>##       year          month             day             hour           minute 
+##  Min.   :2003   Min.   : 1.000   Min.   : 1.00   Min.   : 0.00   Min.   :0  
+##  1st Qu.:2005   1st Qu.: 3.000   1st Qu.: 8.00   1st Qu.: 5.75   1st Qu.:0  
+##  Median :2007   Median : 6.000   Median :16.00   Median :11.50   Median :0  
+##  Mean   :2007   Mean   : 6.472   Mean   :15.76   Mean   :11.50   Mean   :0  
+##  3rd Qu.:2009   3rd Qu.: 9.000   3rd Qu.:23.00   3rd Qu.:17.25   3rd Qu.:0  
+##  Max.   :2011   Max.   :12.000   Max.   :31.00   Max.   :23.00   Max.   :0  
+##      second  precip [kg m-2 s-1] sw down [W m-2]     lw down [W m-2]  
+##  Min.   :0   Min.   :0.000e+00   Min.   :-9999.000   Min.   :-9999.0  
+##  1st Qu.:0   1st Qu.:0.000e+00   1st Qu.:   -3.510   1st Qu.:  173.4  
+##  Median :0   Median :0.000e+00   Median :   -0.344   Median :  231.4  
+##  Mean   :0   Mean   :3.838e-05   Mean   :-1351.008   Mean   :-1325.7  
+##  3rd Qu.:0   3rd Qu.:0.000e+00   3rd Qu.:  294.900   3rd Qu.:  272.2  
+##  Max.   :0   Max.   :6.111e-03   Max.   : 1341.000   Max.   :  365.8  
+##   air temp [K]   windspeed [m s-1]       site          
+##  Min.   :242.1   Min.   :-9999.000   Length:138336     
+##  1st Qu.:265.8   1st Qu.:    0.852   Class :character  
+##  Median :272.6   Median :    1.548   Mode  :character  
+##  Mean   :272.6   Mean   : -790.054                     
+##  3rd Qu.:279.7   3rd Qu.:    3.087                     
+##  Max.   :295.8   Max.   :  317.300</code></pre>
+<p>##5.
+Make a line plot of mean temp by year by site (using the <code>air temp [K]</code> variable). Is there anything suspicious in the plot? Adjust your filtering if needed.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="functions-and-iterations.html#cb49-1"></a>temperature&lt;-met_files<span class="op">%&gt;%</span></span>
+<span id="cb49-2"><a href="functions-and-iterations.html#cb49-2"></a><span class="st">  </span><span class="kw">group_by</span>(year, site)<span class="op">%&gt;%</span></span>
+<span id="cb49-3"><a href="functions-and-iterations.html#cb49-3"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanT =</span> <span class="kw">mean</span>(<span class="st">`</span><span class="dt">air temp [K]</span><span class="st">`</span>))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="functions-and-iterations.html#cb51-1"></a><span class="kw">ggplot</span>(temperature, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">y=</span>meanT, <span class="dt">color=</span>site))<span class="op">+</span></span>
+<span id="cb51-2"><a href="functions-and-iterations.html#cb51-2"></a><span class="st">  </span><span class="kw">geom_line</span>()<span class="op">+</span></span>
+<span id="cb51-3"><a href="functions-and-iterations.html#cb51-3"></a><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()</span></code></pre></div>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="functions-and-iterations.html#cb52-1"></a><span class="kw">message</span>(<span class="st">&quot;Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.&quot;</span>)</span></code></pre></div>
+<pre><code>## Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.</code></pre>
+<p>##6.
+Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
+Hint: <a href="https://ggplot2.tidyverse.org/reference/print.ggplot.html" class="uri">https://ggplot2.tidyverse.org/reference/print.ggplot.html</a></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="functions-and-iterations.html#cb54-1"></a>loopy&lt;-<span class="cf">function</span>(data, xyear){</span>
+<span id="cb54-2"><a href="functions-and-iterations.html#cb54-2"></a>  <span class="co">#y&lt;-as.vector(unique(data[c(&quot;year&quot;)]))</span></span>
+<span id="cb54-3"><a href="functions-and-iterations.html#cb54-3"></a>  met&lt;-data<span class="op">%&gt;%</span><span class="kw">group_by</span>(year, month , site)<span class="op">%&gt;%</span></span>
+<span id="cb54-4"><a href="functions-and-iterations.html#cb54-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanT=</span><span class="kw">mean</span>(<span class="st">`</span><span class="dt">air temp [K]</span><span class="st">`</span>))<span class="op">%&gt;%</span></span>
+<span id="cb54-5"><a href="functions-and-iterations.html#cb54-5"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(year<span class="op">==</span>xyear)</span>
+<span id="cb54-6"><a href="functions-and-iterations.html#cb54-6"></a>  <span class="kw">print</span>(<span class="kw">ggplot</span>(met,<span class="kw">aes</span>(<span class="dt">x=</span>month, <span class="dt">y=</span>meanT, <span class="dt">color=</span>site))<span class="op">+</span></span>
+<span id="cb54-7"><a href="functions-and-iterations.html#cb54-7"></a><span class="st">            </span><span class="kw">geom_line</span>()<span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(xyear))}</span>
+<span id="cb54-8"><a href="functions-and-iterations.html#cb54-8"></a>  </span>
+<span id="cb54-9"><a href="functions-and-iterations.html#cb54-9"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2005</span><span class="op">:</span><span class="dv">2010</span>){</span>
+<span id="cb54-10"><a href="functions-and-iterations.html#cb54-10"></a>  <span class="kw">loopy</span>(met_files, i)</span>
+<span id="cb54-11"><a href="functions-and-iterations.html#cb54-11"></a>}</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.
+## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-6-5.png" width="672" /><img src="03-Function_files/figure-html/unnamed-chunk-6-6.png" width="672" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="functions-and-iterations.html#cb60-1"></a><span class="kw">message</span>(<span class="st">&quot;From 2005 to 2010 the monthly average temperatures at the Senator Beck Study Plot are never warmer than the Snow Angel Study Plot&quot;</span>)</span></code></pre></div>
+<pre><code>## From 2005 to 2010 the monthly average temperatures at the Senator Beck Study Plot are never warmer than the Snow Angel Study Plot</code></pre>
+<p>##Bonus
+Make a plot of average daily precipitation by day of year (averaged across all available years). Color each site.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="functions-and-iterations.html#cb62-1"></a><span class="co">#coloring each site will not work with duplicate site data</span></span>
+<span id="cb62-2"><a href="functions-and-iterations.html#cb62-2"></a>met_files<span class="op">$</span>second&lt;-<span class="kw">as.Date</span>(<span class="kw">with</span>(met_files,<span class="kw">paste</span>(month,day,<span class="dt">sep=</span><span class="st">&quot;-&quot;</span>)),<span class="st">&quot;%m-%d&quot;</span>)<span class="op">%&gt;%</span></span>
+<span id="cb62-3"><a href="functions-and-iterations.html#cb62-3"></a><span class="kw">format</span>(., <span class="st">&quot;%j&quot;</span>)</span>
+<span id="cb62-4"><a href="functions-and-iterations.html#cb62-4"></a>  pre&lt;-<span class="kw">group_by</span>(met_files,second)<span class="op">%&gt;%</span></span>
+<span id="cb62-5"><a href="functions-and-iterations.html#cb62-5"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanPre =</span> <span class="kw">mean</span>(<span class="st">`</span><span class="dt">precip [kg m-2 s-1]</span><span class="st">`</span>))</span>
+<span id="cb62-6"><a href="functions-and-iterations.html#cb62-6"></a>    <span class="kw">names</span>(pre)=<span class="kw">c</span>(<span class="st">&#39;Julian_Day&#39;</span>, <span class="st">&#39;Mean_Precip&#39;</span>)</span>
+<span id="cb62-7"><a href="functions-and-iterations.html#cb62-7"></a><span class="kw">ggplot</span>(pre, <span class="kw">aes</span>(<span class="dt">x=</span>Julian_Day,<span class="dt">y=</span>Mean_Precip))<span class="op">+</span></span>
+<span id="cb62-8"><a href="functions-and-iterations.html#cb62-8"></a><span class="st">  </span><span class="kw">geom_point</span>()<span class="op">+</span></span>
+<span id="cb62-9"><a href="functions-and-iterations.html#cb62-9"></a><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()</span></code></pre></div>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Bonus #2: Use a function and for loop to create yearly plots of precipitation by day of year. Color each site.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="functions-and-iterations.html#cb63-1"></a>Ploopy&lt;-<span class="cf">function</span>(data, xyear){</span>
+<span id="cb63-2"><a href="functions-and-iterations.html#cb63-2"></a>  <span class="co">#y&lt;-as.vector(unique(data[c(&quot;year&quot;)]))</span></span>
+<span id="cb63-3"><a href="functions-and-iterations.html#cb63-3"></a>  met&lt;-data<span class="op">%&gt;%</span><span class="kw">group_by</span>(year, second , site)<span class="op">%&gt;%</span></span>
+<span id="cb63-4"><a href="functions-and-iterations.html#cb63-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanP=</span><span class="kw">mean</span>(<span class="st">`</span><span class="dt">precip [kg m-2 s-1]</span><span class="st">`</span>))<span class="op">%&gt;%</span></span>
+<span id="cb63-5"><a href="functions-and-iterations.html#cb63-5"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(year<span class="op">==</span>xyear)</span>
+<span id="cb63-6"><a href="functions-and-iterations.html#cb63-6"></a>    <span class="kw">colnames</span>(met)[<span class="dv">2</span>]=<span class="st">&#39;Julian_Day&#39;</span></span>
+<span id="cb63-7"><a href="functions-and-iterations.html#cb63-7"></a>  <span class="kw">print</span>(<span class="kw">ggplot</span>(met,<span class="kw">aes</span>(<span class="dt">x=</span>Julian_Day, <span class="dt">y=</span>meanP, <span class="dt">color=</span>site))<span class="op">+</span></span>
+<span id="cb63-8"><a href="functions-and-iterations.html#cb63-8"></a><span class="st">            </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(xyear))}</span>
+<span id="cb63-9"><a href="functions-and-iterations.html#cb63-9"></a>  </span>
+<span id="cb63-10"><a href="functions-and-iterations.html#cb63-10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2003</span><span class="op">:</span><span class="dv">2010</span>){</span>
+<span id="cb63-11"><a href="functions-and-iterations.html#cb63-11"></a>  <span class="kw">Ploopy</span>(met_files, i)</span>
+<span id="cb63-12"><a href="functions-and-iterations.html#cb63-12"></a>}</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.
+## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;second&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p><img src="03-Function_files/figure-html/unnamed-chunk-8-7.png" width="672" /><img src="03-Function_files/figure-html/unnamed-chunk-8-8.png" width="672" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-wrangle.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="regressions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/jsitters/essbookdown/edit/master/03-Function.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/jsitters/essbookdown/blob/master/03-Function.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

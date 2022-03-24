@@ -1,5 +1,6 @@
 book_filename: "bookdownproj"
 delete_merged_file: true
+new_session: yes
 output_dir: "docs"
 edit: https://github.com/jsitters/essbookdown/edit/master/%s
 view: https://github.com/jsitters/essbookdown/blob/master/%s
