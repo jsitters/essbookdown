@@ -97,5 +97,5 @@ spatial_200 <- inner_join(spatial_lakes,chla_secchi_200 %>%
                           by='lagoslakeid')
 
 ggplot(spatial_200, aes(x=secchi, y=chla))+ geom_point()+
-  theme_bw() 
+  theme_bw() +labs(x="Secchi Depth (m)")
 ```

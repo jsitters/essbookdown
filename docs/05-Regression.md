@@ -49,7 +49,7 @@ winnesummer <- tmaxdf %>%
 ggplot(winnesummer, mapping = aes(x = year, y = meantmax)) +
   geom_point() +
   theme_bw() +
-  labs(x = "year", y = "Tmax (°C)") +
+  labs(x = "Year", y = "Max Temperature (°C)") +
   geom_smooth(method = lm)
 ```
 
@@ -76,7 +76,7 @@ winnewinter <- tmaxdf %>%
 ggplot(winnewinter, mapping = aes(x = year, y = meantmax)) +
   geom_point() +
   theme_bw() +
-  labs(x = "year", y = "Tmax (°C)") +
+  labs(x = "Year", y = "Max Temperature (°C)") +
   geom_smooth(method = lm)
 ```
 
@@ -129,7 +129,7 @@ ggplot(winnewinter) +
   geom_point(mapping = aes(x = year, y = meantmax)) +
   geom_line(mapping = aes(x = year, y = fitted)) +
   theme_bw() +
-  labs(x = "year", y = "tmax")
+  labs(x = "Year", y = "Max Temperature")
 ```
 
 <img src="05-Regression_files/figure-html/quadratic temp trend-1.png" width="672" />
@@ -171,7 +171,7 @@ ggplot(Winne_CY, mapping = aes(x=year, y=yield))+
   theme_bw()+
   geom_smooth(method = lm)+
   xlab("Year")+
-  ylab("Yield")+
+  ylab("Yield (tons/acre)")+
   ggtitle("Corn Yields in Winneshiek County")
 ```
 
@@ -180,14 +180,8 @@ ggplot(Winne_CY, mapping = aes(x=year, y=yield))+
 ```
 
 <img src="05-Regression_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+"There is an increasing linear trend between year and yield."
 
-```r
-message("There is an increasing linear trend between year and yield.")
-```
-
-```
-## There is an increasing linear trend between year and yield.
-```
 ### Question 1b: Fit a quadratic time trend (i.e., year + year^2) and make a plot. Is there evidence for slowing yield growth? 
 
 ```r
@@ -301,14 +295,8 @@ ggplot(q2)+
 ```
 
 <img src="05-Regression_files/figure-html/unnamed-chunk-4-2.png" width="672" />
+'Adding a model of Tmax^2 is helpful to interperte the trends of temperature and its effects on corn yield. From this graph you can see as temperature increases yield does as well until a threshold is reached and yield begins to decrease as temperature gets hotter.'
 
-```r
-message('Adding a model of Tmax^2 is helpful to interperte the trends of temperature and its effects on corn yield. From this graph you can see as temperature increases yield does as well until a threshold is reached and yield begins to decrease as temperature gets hotter.' )
-```
-
-```
-## Adding a model of Tmax^2 is helpful to interperte the trends of temperature and its effects on corn yield. From this graph you can see as temperature increases yield does as well until a threshold is reached and yield begins to decrease as temperature gets hotter.
-```
 ## Question 3 
 Cross-Section: Analyze the relationship between temperature and yield across all counties in 2018. Is there a relationship? Interpret the results.
 
@@ -339,7 +327,7 @@ ggplot(mapping = aes(x=jd18$meanTmax, y=jd18$yield))+
   geom_point()+
   ggtitle("2018 Temperature and Yield Analysis")+
   theme_bw()+
-  labs(x="Mean Max Temperature (°C)", y="Corn Yield")+
+  labs(x="Mean Max Temperature (°C)", y="Corn Yield (tons/acre)")+
   geom_smooth(method = lm)
 ```
 
@@ -348,14 +336,8 @@ ggplot(mapping = aes(x=jd18$meanTmax, y=jd18$yield))+
 ```
 
 <img src="05-Regression_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+'There does not seem to be much of a trend between temperature and corn yield over all of the counties in 2018. When a linear model if fitted to the data you can see a slight decreasing trend in temperature vs yield. '
 
-```r
-message('There does not seem to be much of a trend between temperature and corn yield over all of the counties in 2018. When a linear model if fitted to the data you can see a slight decreasing trend in temperature vs yield. ')
-```
-
-```
-## There does not seem to be much of a trend between temperature and corn yield over all of the counties in 2018. When a linear model if fitted to the data you can see a slight decreasing trend in temperature vs yield.
-```
 ## Question 4 
 Panel: One way to leverage multiple time series is to group all data into what is called a "panel" regression. Convert the county ID code ("countyfp" or "county_ansi") into factor using as.factor, then include this variable in a regression using all counties' yield and summer temperature data. How does the significance of your temperature coefficients (Tmax, Tmax^2) change? Make a plot comparing actual and fitted yields and interpret the results of your model.
 
@@ -503,7 +485,7 @@ ggplot()+
   geom_smooth(combo, mapping=aes(x=fitted, y=yield),method = lm)+
   theme_bw()+
   labs(x='Predicted Yield', y='Actual Yield')+
-  ggtitle("Actual Yield and fitted yield")
+  ggtitle("Actual Yield and Fitted Yield")
 ```
 
 ```
@@ -511,15 +493,9 @@ ggplot()+
 ```
 
 <img src="05-Regression_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+'The model fits yield based on multiple variables including mean max temp, temperature squared, each county, and each year. The coefficients for temperature is positive but the coefficient for temp^2 is negative. The graph shows how well the modeled predicts values for yield, it is not quite a one to one relationship but there is a linear trend.'
 
-```r
-message('The model fits yield based on multiple variables including mean max temp, temperature squared, each county, and each year. The coefficients for temperature is positive but the coefficient for temp^2 is negative. The graph shows how well the modeled predicts values for yield, it is not quite a one to one relationship but there is a linear trend.')
-```
-
-```
-## The model fits yield based on multiple variables including mean max temp, temperature squared, each county, and each year. The coefficients for temperature is positive but the coefficient for temp^2 is negative. The graph shows how well the modeled predicts values for yield, it is not quite a one to one relationship but there is a linear trend.
-```
 ## Question 5
 Soybeans: Download NASS data on soybean yields and explore either a time series relationship for a given county, the cross-sectional relationship for a given year, or a panel across all counties and years.
 
-
+'There is a steady increase in soybean yield over time in the Buena Vista county.'

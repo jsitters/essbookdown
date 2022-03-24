@@ -1,16 +1,16 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Data Wrangle
-Pulling data from files and reading them into R for analysis. 
+Now that we have learned how to munge (manipulate) data and plot it, we will work on using these skills in new ways. Pulling data from files and reading them into R for analysis. 
 
 ```r
 library(tidyverse)
 library(tidyr)
 library(ggthemes)
 library(lubridate)
-
-# Now that we have learned how to munge (manipulate) data
-# and plot it, we will work on using these skills in new ways
-
-#knitr::opts_knit$set(root.dir='..')
 ```
 
 
@@ -20,7 +20,6 @@ library(lubridate)
 #Reading in files
 files <- list.files('data',full.names=T)
 ##'data' will work if not inline printing
-
 
 #Read in individual data files
 ndmi <- read_csv(files[1]) %>% 
@@ -61,8 +60,8 @@ full_wide<-spread(full_long, key='data', value='value')%>%
 
 ggplot(full_wide, aes(x=ndmi, y=ndvi,color=site ))+
   geom_point(shape=1) + 
-  theme_few() + 
-  scale_color_few() + 
+  theme_bw() + 
+  #scale_color_few() + 
   theme(legend.position=c(0.8,0.8))
 ```
 
@@ -71,14 +70,8 @@ ggplot(full_wide, aes(x=ndmi, y=ndvi,color=site ))+
 ```
 
 <img src="02-Wrangle_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+"There is a positive correlation between NDMI and NDVI for the summer months. This indicates that seasonal moisture impacts vegetation growth. "
 
-```r
-print("There is a positive correlation between NDMI and NDVI for the summer months. This indicates that seasonal moisture impacts vegetation growth. ")
-```
-
-```
-## [1] "There is a positive correlation between NDMI and NDVI for the summer months. This indicates that seasonal moisture impacts vegetation growth. "
-```
 ## Question (2) 
 
 2) What is the correlation between average NDSI (normalized
@@ -103,20 +96,16 @@ all_year<-inner_join(f_ndsi, f_ndvi, by='year')
   
 ggplot(all_year, aes(x=mean_ndsi, y=mean_ndvi))+ 
   geom_point() + 
-  theme_few() + 
-  scale_color_few() + 
-  theme(legend.position=c(0.8,0.8))
+  theme_bw() + 
+  #scale_color_few() + 
+  theme(legend.position=c(0.8,0.8)) +
+  ylab("Mean NDVI") +
+  xlab("Mean NDSI")
 ```
 
 <img src="02-Wrangle_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+"There is a weak positive correlation between NSDI and NDVI. This indicates that the previous years' snow cover influences the vegetation growth."
 
-```r
-print("There is a weak positive correlation between NSDI and NDVI. This indicates that the previous years' snow cover influences the vegetation growth.")
-```
-
-```
-## [1] "There is a weak positive correlation between NSDI and NDVI. This indicates that the previous years' snow cover influences the vegetation growth."
-```
 ## Question (3)
 
 How is the snow effect from question 2 different between pre- and post-burn
@@ -160,19 +149,15 @@ all_year3<-left_join(ndsi3, ndvi3)
 ```r
 ggplot(all_year3, aes(x=mean_ndsi, y=mean_ndvi, color=site))+ 
   geom_point() + 
-  theme_few() + 
-  scale_color_few()
+  theme_bw() + 
+  #scale_color_few()+ 
+  ylab("Mean NDVI") +
+  xlab("Mean NDSI")
 ```
 
 <img src="02-Wrangle_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+"The burned sites (blue) are more impacted by the previous years snow than the unburned (orange) sites"
 
-```r
-message("The burned sites (blue) are more impacted by the previous years snow than the unburned (orange) sites")
-```
-
-```
-## The burned sites (blue) are more impacted by the previous years snow than the unburned (orange) sites
-```
 ## Question (4)
 
 What month is the greenest month on average? 
@@ -187,8 +172,8 @@ monthlygreen<-spread(full_long, key='data', value='value')%>%
 
 ggplot(monthlygreen, aes(x=month, y=meanNdvi))+ 
   geom_point() + 
-  theme_few() + 
-  scale_color_few()+ 
+  theme_bw() + 
+  ylab("Mean NDVI")+
   scale_x_continuous(name="Month Number", limits=c(1, 12), breaks=c(2,4,6,8,10,12))
 ```
 
@@ -224,8 +209,8 @@ snowy<-spread(full_long, key='data', value='value')%>%
 
 ggplot(snowy, aes(x=month, y=meanNdsi))+ 
   geom_point() + 
-  theme_few() + 
-  scale_color_few()+ 
+  theme_bw() + 
+  ylab("Mean NDSI")+
   scale_x_continuous(name="Month Number", limits=c(1, 12), breaks=c(2,4,6,8,10,12))
 ```
 

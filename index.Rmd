@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 # Intro
-This is an R Bookdown document of the data analysis skills I have learned through ESS 580. 
+This is an R Bookdown document of the data analysis skills I have learned through ESS 580. Weekly assignments are compiled in this bookdown so I (or someone else) can use this as a template for my own research data. 
 
 
 ```{r setup1, include=FALSE}
@@ -21,8 +21,10 @@ library(xts)
 
 
 # R Markdown
+## SiteDescription
+The Poudre River at Lincoln Bridge is shown below
 
-The Poudre River at Lincoln Bridge is:
+Some key aspects of this location are:
 
   - Downstream of only a little bit of urban stormwater
 
@@ -33,7 +35,6 @@ The Poudre River at Lincoln Bridge is:
   - **Downstream of many agricultral diversions**
 
 
-## SiteDescription
 
 ![](https://waterdata.usgs.gov/nwisweb/local/state/co/text/pics/06752260big.jpg)
 
@@ -93,7 +94,8 @@ assignments. With that in mind, your assignment for this homework is to:
 ```{r}
 
 dygraph(q_xts) %>% 
-dyRangeSelector()
+dyRangeSelector()%>% 
+dyAxis("y", label = "Discharge (cfs)") 
 ``` 
 ## Poudre Paragraph
 The _Cache la Poudre_ is a snow melt fed watershed in Northern Colorado. Much of the Poudre is under limited human impact, with almost __half__ of the river designated as a [Wild and Scenic river](https://www.rivers.gov/wsr-act.php). The City of Fort Collins is concerned that [microplastics](https://oceanservice.noaa.gov/facts/microplastics.html) in freshwater environments could impact both __ecological__ and __human__ health since the Cache la Poudre River watershed is a main source of drinking and irrigation water for Northern Colorado. Utility managers are interested in finding out a way to remove microplastics through the WWTP as described in the research by [Ngo](https://www.sciencedirect.com/science/article/pii/S0269749119337169).

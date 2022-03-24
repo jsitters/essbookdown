@@ -1,5 +1,10 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Functions and Iterations
-Learning to quickly go through and pull data out of a dataset using functions and iterations to avoid repeatitive code. 
+Learning to quickly go through and pull data out of a dataset using functions and iterations to avoid repetitive code. 
 
 
 
@@ -60,7 +65,7 @@ headers <- pdf_text('https://snowstudies.org/wp-content/uploads/2022/02/Serially
   .[,2] %>%
   .[1:26] %>%
   str_trim(side = "left")
-headers
+headers #shows the headers of the dataset, useful for extracting columns. 
 ```
 
 ```
@@ -93,9 +98,8 @@ headers
 ```
 
 ```r
-#function to read in 1 data file
-# 
-#file=file_names[1]
+#function to read in data files
+
 reader<- function(file){
   name = str_split_fixed(file,'/',2)[,2]%>%
   gsub('_Forcing_Data.txt','',.)
@@ -192,18 +196,14 @@ temperature<-met_files%>%
 ```r
 ggplot(temperature, aes(x=year, y=meanT, color=site))+
   geom_line()+
-  ggthemes::theme_few()
+  ggthemes::theme_few()+
+  xlab("Year")+
+  ylab("Mean Air Temperature (K)")
 ```
 
 <img src="03-Function_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+"Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data."
 
-```r
-message("Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.")
-```
-
-```
-## Site SBB_SASP has a higher yearly mean temperature than site SBB_SBSP for all years in the dataset. There is a big jump in temperature from the first year to the following years. Further inspection (in Q6) is needed to determine the suspicious jump in data.
-```
 ## Function to create multiple plots
 Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. Are monthly average temperatures at the Senator Beck Study Plot ever warmer than the Snow Angel Study Plot?
 Hint: https://ggplot2.tidyverse.org/reference/print.ggplot.html
@@ -215,7 +215,7 @@ loopy<-function(data, xyear){
   summarize(meanT=mean(`air temp [K]`))%>%
     dplyr::filter(year==xyear)
   print(ggplot(met,aes(x=month, y=meanT, color=site))+
-            geom_line()+ facet_wrap(xyear))}
+            geom_line()+ labs(y= "Mean Temperature (K)",x = "Year")+ facet_wrap(xyear))}
   
 for (i in 2005:2010){
   loopy(met_files, i)
@@ -278,7 +278,8 @@ format(., "%j")
     names(pre)=c('Julian_Day', 'Mean_Precip')
 ggplot(pre, aes(x=Julian_Day,y=Mean_Precip))+
   geom_point()+
-  ggthemes::theme_few()
+  ggthemes::theme_few() +
+  labs(x="Julian Day", y="Mean Precipitation (kg m-2 s-1)")
 ```
 
 <img src="03-Function_files/figure-html/unnamed-chunk-7-1.png" width="672" />
@@ -292,7 +293,7 @@ Ploopy<-function(data, xyear){
     dplyr::filter(year==xyear)
     colnames(met)[2]='Julian_Day'
   print(ggplot(met,aes(x=Julian_Day, y=meanP, color=site))+
-            geom_point()+ facet_wrap(xyear))}
+            geom_point()+ labs(x="Julian Day", y="Mean Precipitation (kg m-2 s-1)") + facet_wrap(xyear))}
   
 for (i in 2003:2010){
   Ploopy(met_files, i)
