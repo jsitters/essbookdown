@@ -1,10 +1,6 @@
---- 
-title: "ESS Final Project"
-author: "Jan Sitterson"
-date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
----
+
 # Spatial Data in R
+Using LAGOSNE lake data and Mapview to look at spatial data in R. 
 ```{r setup4, include=FALSE}
 library(tidyverse) # Tidy packages
 library(sf) #Spatial package that can read and create shapefiles 
@@ -13,18 +9,21 @@ library(LAGOSNE) #Lots and lots of clean lake data
 library(USAboundaries) #USA states and counties
 mapviewOptions(fgb=FALSE)
 
-lagos <- lagosne_load()
 
-#Grab the lake centroid info
+```
+
+##View lake centroid
+Show lakes in Illinois and Iowa. 
+```{r}
+lagos <- lagosne_load()
 lake_centers <- lagos$locus
 
 spatial_lakes <- st_as_sf(lake_centers,coords=c('nhd_long','nhd_lat'),
                           crs=4326) %>%
   st_transform(2163)
 
-#Subset for plotting
-subset_spatial <- spatial_lakes %>%
-  slice(1:100) 
+states <- us_states()
+
 
 subset_baser <- spatial_lakes[1:100,]
 I_state <- states %>%
@@ -34,4 +33,48 @@ I_state <- states %>%
 
 mapview(I_state)
 
+```
+##Secchi Disk Depth Analysis
+What is the correlation between Secchi Disk Depth and Chlorophyll a for sites with at least 200 observations?
+
+```{r}
+### Take the mean chl_a and secchi by lake
+mean_values_200 <- chla_secchi_200 %>%
+  # Take summary by lake id
+  group_by(lagoslakeid) %>%
+  # take mean chl_a per lake id
+  summarize(mean_chl = mean(chla,na.rm=T),
+            mean_secchi=mean(secchi,na.rm=T)) %>%
+  #Get rid of NAs
+  filter(!is.na(mean_chl),
+         !is.na(mean_secchi)) %>%
+  # Take the log base 10 of the mean_chl
+  mutate(log10_mean_chl = log10(mean_chl))
+#Join datasets
+mean_spatial <- inner_join(spatial_lakes,mean_values_200,
+                          by='lagoslakeid') 
+#Make a map
+mapview(mean_spatial,zcol='log10_mean_chl')
+```
+A plot of chla vs secchi for all sites. 
+```{r}
+nutr <- lagos$epi_nutr
+clarity_only <- nutr %>%
+  select(lagoslakeid,sampledate,chla,doc,secchi) %>%
+  mutate(sampledate = as.character(sampledate) %>% ymd(.))
+chla_secchi <- clarity_only %>%
+  filter(!is.na(chla),
+         !is.na(secchi))
+
+chla_secchi_200 <- chla_secchi %>%
+  group_by(lagoslakeid) %>%
+  mutate(count = n()) %>%
+  filter(count > 200)
+
+spatial_200 <- inner_join(spatial_lakes,chla_secchi_200 %>%
+                            distinct(lagoslakeid,.keep_all=T),
+                          by='lagoslakeid')
+
+ggplot(spatial_200, aes(x=secchi, y=chla))+ geom_point()+
+  theme_bw() 
 ```
